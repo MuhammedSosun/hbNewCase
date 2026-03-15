@@ -1,0 +1,52 @@
+.product-list-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.native-selectbox {
+  align-self: flex-end;
+  padding: 8px 12px;
+  border: 1px solid #d8d8d8;
+  border-radius: 6px;
+  font-size: 13px;
+  background-color: #fff;
+  cursor: pointer;
+  margin-bottom: 20px;
+  outline: none;
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 15px;
+}
+.pagination {
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-top: 30px;
+}
+
+.page-item,
+.page-nav {
+  min-width: 36px;
+  height: 36px;
+  border: 1px solid #ddd;
+  background: #fff;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.page-item.active {
+  background: #ff6000;
+  color: white;
+  border-color: #ff6000;
+}
+
+.page-item:disabled,
+.page-nav:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

@@ -1,0 +1,37 @@
+import React from "react";
+import "../css/productCard.css";
+function ProductCard({ product }) {
+  return (
+    <div className="product-card">
+      <div className="product-image">
+        <img src={product.imageUrl} alt={product.name} />
+      </div>
+      <div className="product-info">
+        <h3 className="product-title" title={product.name}>
+          {product.name}
+        </h3>
+        <div className="product-details">
+          <div>
+            <strong>Marka:</strong> {product.brand}
+          </div>
+          <div>
+            <strong>Renk:</strong> {product.color}
+          </div>
+        </div>
+        <div className="price-area">
+          {product.originalPrice && (
+            <div className="discount-container">
+              <span className="old-price">{product.originalPrice} TL</span>
+              <span className="discount-badge">%{product.discount}</span>
+            </div>
+          )}
+
+          <span className="current-price">{product.price} TL</span>
+        </div>
+        <button className="add-to-cart-btn">Sepete ekle</button>
+      </div>
+    </div>
+  );
+}
+
+export default ProductCard;

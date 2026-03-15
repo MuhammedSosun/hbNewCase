@@ -1,0 +1,35 @@
+.sidebar {
+  width: 200px;
+  flex-shrink: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.sidebar-search-text {
+  font-size: 11px;
+  color: #999;
+  margin-bottom: 20px;
+}
+
+.filter-title {
+  font-size: 13px;
+  font-weight: 700;
+  margin: 15px 0 10px 0;
+  color: #333;
+}
+
+.filter-list {
+  list-style: none;
+  padding: 0;
+}
+
+.filter-item {
+  font-size: 12px;
+  padding: 4px 0;
+  color: #666;
+  cursor: pointer;
+}
+
+.filter-item.active {
+  color: #ff6000;
+  font-weight: 600;
+}
