@@ -187,3 +187,23 @@
   text-align: left;
   text-decoration: underline;
 }
+.cart-footer {
+  width: 100%;
+  text-align: right; /* İçindeki butonu sağa yaslar */
+  border-top: 1px solid #eee; /* Ürünlerden ayırmak için ince bir çizgi */
+  padding-top: 10px;
+  margin-top: 5px;
+}
+
+.go-to-cart-btn {
+  background: #ff6000;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.image-cursor {
+  cursor: pointer;
+}

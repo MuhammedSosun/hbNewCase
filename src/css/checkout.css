@@ -1,0 +1,136 @@
+.checkout-container {
+  display: flex;
+  gap: 30px;
+  margin-top: 30px;
+  align-items: flex-start;
+}
+
+.checkout-left {
+  flex: 3;
+}
+
+.checkout-left h2 {
+  font-size: 22px;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.checkout-item {
+  display: flex;
+  background: #fff;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 15px;
+  align-items: center;
+}
+
+.item-image img {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+  margin-right: 20px;
+}
+
+.item-details {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
+}
+
+.item-name {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.item-sub {
+  font-size: 13px;
+  color: #777;
+}
+
+.item-price-section {
+  text-align: right;
+}
+
+.item-price {
+  display: block;
+  font-size: 18px;
+  font-weight: 700;
+  color: #ff6000;
+  margin-bottom: 10px;
+}
+
+.item-remove-link {
+  background: none;
+  border: none;
+  color: #999;
+  font-size: 13px;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.item-remove-link:hover {
+  color: #f44336;
+}
+
+/* Sağ Taraf - Özet Kutusu */
+.checkout-right {
+  flex: 1;
+  position: sticky;
+  top: 20px;
+}
+
+.summary-box {
+  background: #f9f9f9;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.summary-box h3 {
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+.summary-line {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+  font-size: 14px;
+}
+
+.free-shipping {
+  color: #2ecc71;
+  font-weight: 600;
+}
+
+.summary-total {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px 0;
+  font-weight: 700;
+  font-size: 18px;
+}
+
+.total-amount {
+  color: #ff6000;
+}
+
+.complete-order-btn {
+  width: 100%;
+  background: #ff6000;
+  color: #fff;
+  border: none;
+  padding: 15px;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.complete-order-btn:hover {
+  background: #e65600;
+}

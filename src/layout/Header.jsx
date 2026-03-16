@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setSearchTerm } from "../redux/slice/ProductSlice";
 import { removeFromCart } from "../redux/slice/CartSlice";
 import Modal from "../components/Modal";
+import { useNavigate } from "react-router-dom";
 
 function Header() {
   const [isCartOpen, setIsCartOpen] = useState(false);
@@ -11,6 +12,7 @@ function Header() {
   const [selectedItem, setSelectedItem] = useState(null);
   const dispatch = useDispatch();
   const { searchTerm } = useSelector((store) => store.products);
+  const navigate = useNavigate();
 
   const { cartItems, totalAmount } = useSelector((store) => store.cart);
 
@@ -36,9 +38,11 @@ function Header() {
       <div className="container header-content">
         <div className="logo">
           <img
+            className="image-cursor"
             src="https://kurumsal.hepsiburada.com/assets/hepsiburada-logo.svg"
             alt="Hepsiburada Logo"
             width="150"
+            onClick={() => navigate("/")}
           />
         </div>
 
@@ -82,12 +86,22 @@ function Header() {
                   </div>
                 </div>
               ))}
+              <div className="cart-footer">
+                <button
+                  className="go-to-cart-btn"
+                  onClick={() => navigate("/checkout")}
+                >
+                  Sepete Git
+                </button>
+              </div>
             </div>
           </div>
         </div>
       </div>
       <Modal
-        showModal={showModal}
+        isOpen={showModal}
+        title="Ürünü silmek istediğinize emin misiniz?"
+        description="Bu işlem geri alınamaz ve ürün sepetinizden kaldırılacaktır."
         onCancel={() => setShowModal(false)}
         onConfirm={confirmDelete}
       />

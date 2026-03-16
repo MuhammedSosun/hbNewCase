@@ -1,10 +1,16 @@
 import React from "react";
 import "../css/productCard.css";
+import { useNavigate } from "react-router-dom";
 function ProductCard({ product, onAddToCart, isInCart }) {
+  const navigate = useNavigate();
   return (
     <div className="product-card">
       <div className="product-image">
-        <img src={product.imageUrl} alt={product.name} />
+        <img
+          src={product.imageUrl}
+          alt={product.name}
+          onClick={() => navigate(`/product/${product.id}`)}
+        />
       </div>
       <div className="product-info">
         <h3 className="product-title" title={product.name}>
@@ -31,7 +37,9 @@ function ProductCard({ product, onAddToCart, isInCart }) {
         <button
           className={`add-to-cart-btn ${isInCart ? "disabled" : ""}`}
           disabled={isInCart}
-          onClick={onAddToCart}
+          onClick={() => {
+            onAddToCart();
+          }}
         >
           {isInCart ? "Bu Ürün Sepete Eklendi" : "Sepete Ekle"}
         </button>

@@ -38,6 +38,8 @@ function ProductList() {
 
   const handleAddToCart = (product) => {
     dispatch(addToCart(product));
+
+    console.log(product);
   };
   const sortedProducts = [...filteredProducts];
 

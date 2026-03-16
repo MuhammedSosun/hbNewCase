@@ -2,6 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   products: [],
+  filteredProduct: [],
+  selectedProduct: null,
   currentPage: 1,
   sortBy: "",
   selectedBrand: "",
@@ -37,6 +39,10 @@ export const productSlice = createSlice({
       state.searchTerm = action.payload;
       state.currentPage = 1;
     },
+    setSelectedProduct: (state, action) => {
+      state.selectedProduct =
+        state.products.find((product) => product.id === action.payload) || null;
+    },
   },
 });
 
@@ -47,6 +53,7 @@ export const {
   setCurrentPage,
   setSortOrder,
   setSearchTerm,
+  setSelectedProduct,
 } = productSlice.actions;
 
 export default productSlice.reducer;
