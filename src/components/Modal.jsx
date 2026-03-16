@@ -3,7 +3,11 @@ import "../css/modal.css";
 function Modal({ isOpen, title, description, onCancel, onConfirm }) {
   if (!isOpen) return null;
   return (
-    <div className="modal-overlay" onClick={onCancel}>
+    <div
+      className="modal-overlay"
+      onClick={onCancel}
+      data-testid="modal-overlay"
+    >
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         <h3 className="modal-title">{title}</h3>
 

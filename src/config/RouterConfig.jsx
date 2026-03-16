@@ -3,6 +3,7 @@ import { Route, Routes } from "react-router-dom";
 import Home from "../pages/Home";
 import ProductDetail from "../pages/ProductDetail";
 import Checkout from "../pages/Checkout";
+import { useSelector } from "react-redux";
 
 function RouterConfig() {
   return (
