@@ -4,6 +4,9 @@ const initialState = {
   products: [],
   currentPage: 1,
   sortBy: "",
+  selectedBrand: "",
+  selectedColor: "",
+  searchTerm: "",
 };
 
 export const productSlice = createSlice({
@@ -20,10 +23,30 @@ export const productSlice = createSlice({
       state.sortBy = action.payload;
       state.currentPage = 1;
     },
+    setSelectedBrand: (state, action) => {
+      state.selectedBrand =
+        state.selectedBrand === action.payload ? "" : action.payload;
+      state.currentPage = 1;
+    },
+    setSelectedColor: (state, action) => {
+      state.selectedColor =
+        state.selectedColor === action.payload ? "" : action.payload;
+      state.currentPage = 1;
+    },
+    setSearchTerm: (state, action) => {
+      state.searchTerm = action.payload;
+      state.currentPage = 1;
+    },
   },
 });
 
-export const { setProducts, setCurrentPage, setSortOrder } =
-  productSlice.actions;
+export const {
+  setSelectedBrand,
+  setSelectedColor,
+  setProducts,
+  setCurrentPage,
+  setSortOrder,
+  setSearchTerm,
+} = productSlice.actions;
 
 export default productSlice.reducer;

@@ -1,6 +1,6 @@
 import React from "react";
 import "../css/productCard.css";
-function ProductCard({ product }) {
+function ProductCard({ product, onAddToCart, isInCart }) {
   return (
     <div className="product-card">
       <div className="product-image">
@@ -28,7 +28,13 @@ function ProductCard({ product }) {
 
           <span className="current-price">{product.price} TL</span>
         </div>
-        <button className="add-to-cart-btn">Sepete ekle</button>
+        <button
+          className={`add-to-cart-btn ${isInCart ? "disabled" : ""}`}
+          disabled={isInCart}
+          onClick={onAddToCart}
+        >
+          {isInCart ? "Bu Ürün Sepete Eklendi" : "Sepete Ekle"}
+        </button>
       </div>
     </div>
   );

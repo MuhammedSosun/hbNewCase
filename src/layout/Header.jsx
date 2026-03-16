@@ -1,8 +1,35 @@
 import React, { useState } from "react";
 import "../css/header.css";
+import { useDispatch, useSelector } from "react-redux";
+import { setSearchTerm } from "../redux/slice/ProductSlice";
+import { removeFromCart } from "../redux/slice/CartSlice";
+import Modal from "../components/Modal";
 
 function Header() {
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null);
+  const dispatch = useDispatch();
+  const { searchTerm } = useSelector((store) => store.products);
+
+  const { cartItems, totalAmount } = useSelector((store) => store.cart);
+
+  const handleSearch = (e) => {
+    const value = e.target.value;
+
+    dispatch(setSearchTerm(value));
+  };
+  const openDeleteModal = (id) => {
+    setSelectedItem(id);
+    setShowModal(true);
+    setIsCartOpen(false);
+  };
+
+  const confirmDelete = () => {
+    dispatch(removeFromCart(selectedItem));
+    setShowModal(false);
+    setSelectedItem(null);
+  };
 
   return (
     <header className="main-header">
@@ -22,6 +49,8 @@ function Header() {
           <input
             type="text"
             placeholder="25 milyondan fazla ürün içerisinde ara"
+            value={searchTerm}
+            onChange={handleSearch}
           />
         </div>
 
@@ -32,24 +61,36 @@ function Header() {
               onClick={() => setIsCartOpen(!isCartOpen)}
             >
               <span className="cart-label">Sepetim</span>
-              <span className="cart-total">0 TL</span>
-              <span className="cart-count">3</span>
+
+              <span className="cart-total">{totalAmount.toFixed(2)} TL</span>
+              <span className="cart-count">{cartItems.length}</span>
               <span className={`cart-arrow ${isCartOpen ? "open" : ""}`}></span>
             </button>
 
             <div className={`cart-dropdown ${isCartOpen ? "active" : ""}`}>
-              <div className="cart-item">
-                <img className="cart-item-image" />
-
-                <div className="cart-item-info">
-                  <p className="cart-item-name"></p>
-                  <button className="remove-btn">Kaldır</button>
+              {cartItems.map((item) => (
+                <div className="cart-item" key={item.id}>
+                  <img src={item.imageUrl} alt={item.name} width="40" />
+                  <div className="cart-item-info">
+                    <p className="cart-item-name">{item.name}</p>
+                    <button
+                      className="remove-btn"
+                      onClick={() => openDeleteModal(item.id)}
+                    >
+                      Kaldır
+                    </button>
+                  </div>
                 </div>
-              </div>
+              ))}
             </div>
           </div>
         </div>
       </div>
+      <Modal
+        showModal={showModal}
+        onCancel={() => setShowModal(false)}
+        onConfirm={confirmDelete}
+      />
     </header>
   );
 }

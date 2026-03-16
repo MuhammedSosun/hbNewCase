@@ -2,6 +2,7 @@ import ProductCard from "./ProductCard";
 import { useDispatch, useSelector } from "react-redux";
 import "../css/productList.css";
 import { setCurrentPage, setSortOrder } from "../redux/slice/ProductSlice";
+import { addToCart } from "../redux/slice/CartSlice";
 
 function ProductList() {
   // = [] bunun var olmasının sebebi  boş dönünce undefined dönmesin
@@ -9,29 +10,54 @@ function ProductList() {
     products = [],
     currentPage,
     sortBy,
+    selectedBrand,
+    selectedColor,
+    searchTerm,
   } = useSelector((store) => store.products);
-
+  const { cartItems } = useSelector((store) => store.cart);
   const dispatch = useDispatch();
+  const itemsPerPage = 12;
+  let filteredProducts = [...products];
+  console.log(cartItems);
+  if (selectedBrand) {
+    filteredProducts = filteredProducts.filter(
+      (products) => products.brand === selectedBrand,
+    );
+  }
 
-  const sortedProducts = [...products];
+  if (selectedColor) {
+    filteredProducts = filteredProducts.filter(
+      (products) => products.color === selectedColor,
+    );
+  }
+  if (searchTerm && searchTerm.trim().length >= 2) {
+    filteredProducts = filteredProducts.filter((product) =>
+      product.name.toLowerCase().includes(searchTerm.toLowerCase().trim()),
+    );
+  }
+
+  const handleAddToCart = (product) => {
+    dispatch(addToCart(product));
+  };
+  const sortedProducts = [...filteredProducts];
 
   if (sortBy === "lowestPrice") {
     sortedProducts.sort((a, b) => a.price - b.price);
   } else if (sortBy === "highestPrice") {
     sortedProducts.sort((a, b) => b.price - a.price);
   } else if (sortBy === "newest-az") {
+    //localeCompare türkçe alfabetik harfleri öncelik sıraya koyar
     sortedProducts.sort((a, b) => a.name.localeCompare(b.name));
   } else if (sortBy === "newest-za") {
     sortedProducts.sort((a, b) => b.name.localeCompare(a.name));
   }
-
-  const itemsPerPage = 12;
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = sortedProducts.slice(indexOfFirstItem, indexOfLastItem);
   const totalPages = Math.ceil(sortedProducts.length / itemsPerPage);
 
+  const isInCart = (id) => cartItems.some((item) => item.id === id);
   return (
     <div className="product-list-container">
       <select
@@ -47,7 +73,12 @@ function ProductList() {
       <div className="product-grid">
         {" "}
         {currentItems?.map((product) => (
-          <ProductCard key={product.id} product={product} />
+          <ProductCard
+            key={product.id}
+            product={product}
+            isInCart={isInCart(product.id)}
+            onAddToCart={() => handleAddToCart(product)}
+          />
         ))}
       </div>
       {totalPages > 1 && (
