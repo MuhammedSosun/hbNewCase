@@ -1,35 +1,92 @@
 .sidebar {
-  width: 200px;
-  flex-shrink: 0;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  width: 260px;
+  padding: 8px 0;
+  background-color: #fff;
+}
+
+.sidebar-header {
+  margin-bottom: 28px;
 }
 
 .sidebar-search-text {
-  font-size: 11px;
-  color: #999;
-  margin-bottom: 20px;
+  font-size: 14px;
+  color: #9b9b9b;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.sidebar-search-text span {
+  color: #1f1f1f;
+  font-weight: 500;
+}
+
+.filter-section,
+.filter-group {
+  margin-bottom: 32px;
 }
 
 .filter-title {
-  font-size: 13px;
+  font-size: 18px;
   font-weight: 700;
-  margin: 15px 0 10px 0;
-  color: #333;
+  color: #2f2f2f;
+  margin: 0 0 16px 0;
 }
 
 .filter-list {
   list-style: none;
   padding: 0;
+  margin: 0;
 }
 
 .filter-item {
-  font-size: 12px;
-  padding: 4px 0;
-  color: #666;
+  font-size: 15px;
+  color: #6b6b6b;
   cursor: pointer;
+  margin-bottom: 12px;
+  transition: color 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  user-select: none;
+}
+
+.filter-item:hover {
+  color: #ff6000;
 }
 
 .filter-item.active {
   color: #ff6000;
-  font-weight: 600;
+  font-weight: 500;
+}
+
+.filter-name {
+  display: inline-block;
+}
+
+.filter-count {
+  color: inherit;
+}
+
+.show-more-btn {
+  margin-top: 8px;
+  padding: 0;
+  border: none;
+  background: none;
+  font-size: 14px;
+  font-weight: 500;
+  color: #4f4f4f;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.show-more-btn:hover {
+  color: #ff6000;
+}
+
+.show-more-btn:focus {
+  outline: none;
+}
+
+.filter-item:last-child {
+  margin-bottom: 0;
 }

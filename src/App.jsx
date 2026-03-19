@@ -4,26 +4,38 @@ import RouterConfig from "./config/RouterConfig";
 import { useEffect } from "react";
 import { mockProducts } from "./mock/products";
 import { setProducts } from "./redux/slice/ProductSlice";
+import { useState } from "react";
 
 function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    try {
-      const localProducts = localStorage.getItem("products");
+    const localData = localStorage.getItem("products");
 
-      if (!localProducts) {
-        localStorage.setItem("products", JSON.stringify(mockProducts));
-        dispatch(setProducts(mockProducts));
-      } else {
-        const parsedProducts = JSON.parse(localProducts);
-        dispatch(setProducts(parsedProducts));
-      }
-    } catch (error) {
-      console.error("LocalStorage products okunurken hata oluştu:", error);
-      localStorage.setItem("products", JSON.stringify(mockProducts));
-      dispatch(setProducts(mockProducts));
+    if (localData) {
+      dispatch(setProducts(JSON.parse(localData)));
     }
+    const fetchAndMergeProducts = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/products");
+        const apiData = await response.json();
+
+        const combinedProducts = [...mockProducts, ...apiData];
+
+        if (JSON.stringify(combinedProducts) !== localData) {
+          dispatch(setProducts(combinedProducts));
+          localStorage.setItem("products", JSON.stringify(combinedProducts));
+        }
+      } catch (err) {
+        console.error("API hatası, mock veriler kullanılıyor:", err);
+        if (!localData) {
+          dispatch(setProducts(mockProducts));
+          localStorage.setItem("products", JSON.stringify(mockProducts));
+        }
+      }
+    };
+
+    fetchAndMergeProducts();
   }, [dispatch]);
 
   return (

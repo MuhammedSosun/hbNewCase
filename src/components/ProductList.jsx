@@ -3,9 +3,10 @@ import { useDispatch, useSelector } from "react-redux";
 import "../css/productList.css";
 import { setCurrentPage, setSortOrder } from "../redux/slice/ProductSlice";
 import { addToCart } from "../redux/slice/CartSlice";
+import { useCallback, useMemo } from "react";
 
 function ProductList() {
-  // = [] bunun var olmasının sebebi  boş dönünce undefined dönmesin
+  const dispatch = useDispatch();
   const {
     products = [],
     currentPage,
@@ -15,66 +16,80 @@ function ProductList() {
     searchTerm,
   } = useSelector((store) => store.products);
   const { cartItems } = useSelector((store) => store.cart);
-  const dispatch = useDispatch();
   const itemsPerPage = 12;
-  let filteredProducts = [...products];
-  console.log(cartItems);
-  if (selectedBrand) {
-    filteredProducts = filteredProducts.filter(
-      (products) => products.brand === selectedBrand,
-    );
-  }
 
-  if (selectedColor) {
-    filteredProducts = filteredProducts.filter(
-      (products) => products.color === selectedColor,
-    );
-  }
-  if (searchTerm && searchTerm.trim().length >= 2) {
-    filteredProducts = filteredProducts.filter((product) =>
-      product.name.toLowerCase().includes(searchTerm.toLowerCase().trim()),
-    );
-  }
+  const filteredProducts = useMemo(() => {
+    let result = [...(products || [])];
 
-  const handleAddToCart = (product) => {
-    dispatch(addToCart(product));
+    if (selectedBrand.length > 0) {
+      result = result.filter((p) => selectedBrand.includes(p.brand));
+    }
 
-    console.log(product);
-  };
-  const sortedProducts = [...filteredProducts];
+    if (selectedColor.length > 0) {
+      result = result.filter((p) => selectedColor.includes(p.color));
+    }
 
-  if (sortBy === "lowestPrice") {
-    sortedProducts.sort((a, b) => a.price - b.price);
-  } else if (sortBy === "highestPrice") {
-    sortedProducts.sort((a, b) => b.price - a.price);
-  } else if (sortBy === "newest-az") {
-    //localeCompare türkçe alfabetik harfleri öncelik sıraya koyar
-    sortedProducts.sort((a, b) => a.name.localeCompare(b.name));
-  } else if (sortBy === "newest-za") {
-    sortedProducts.sort((a, b) => b.name.localeCompare(a.name));
-  }
+    if (searchTerm?.trim().length >= 2) {
+      const lowerSearch = searchTerm.toLowerCase().trim();
+      result = result.filter((p) => p.name.toLowerCase().includes(lowerSearch));
+    }
 
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = sortedProducts.slice(indexOfFirstItem, indexOfLastItem);
+    return result;
+  }, [products, selectedBrand, selectedColor, searchTerm]);
+
+  const sortedProducts = useMemo(() => {
+    const result = [...filteredProducts];
+
+    switch (sortBy) {
+      case "lowestPrice":
+        return result.sort((a, b) => a.price - b.price);
+      case "highestPrice":
+        return result.sort((a, b) => b.price - a.price);
+      case "newest-az":
+        return result.sort((a, b) => a.name.localeCompare(b.name));
+      case "newest-za":
+        return result.sort((a, b) => b.name.localeCompare(a.name));
+      default:
+        return result;
+    }
+  }, [filteredProducts, sortBy]);
   const totalPages = Math.ceil(sortedProducts.length / itemsPerPage);
 
-  const isInCart = (id) => cartItems.some((item) => item.id === id);
+  const currentItems = useMemo(() => {
+    const start = (currentPage - 1) * itemsPerPage;
+    return sortedProducts.slice(start, start + itemsPerPage);
+  }, [sortedProducts, currentPage]);
+  const handleAddToCart = useCallback(
+    (product) => {
+      dispatch(addToCart(product));
+    },
+    [dispatch],
+  );
+
+  const isInCart = useCallback(
+    (id) => {
+      return cartItems.some((item) => item.id === id);
+    },
+    [cartItems],
+  );
   return (
     <div className="product-list-container">
-      <select
-        className="native-selectbox"
-        value={sortBy}
-        onChange={(e) => dispatch(setSortOrder(e.target.value))}
-      >
-        <option value="lowestPrice">En Düşük Fiyat</option>
-        <option value="highestPrice">En Yüksek Fiyat</option>
-        <option value="newest-az">En Yeniler (A{">"}Z)</option>
-        <option value="newest-za">En Yeniler (Z{">"}A)</option>
-      </select>{" "}
+      <div className="list-controls">
+        <select
+          className="native-selectbox"
+          value={sortBy}
+          onChange={(e) => dispatch(setSortOrder(e.target.value))}
+        >
+          <option value="">Sıralama Seçiniz</option>
+          <option value="lowestPrice">En Düşük Fiyat</option>
+          <option value="highestPrice">En Yüksek Fiyat</option>
+          <option value="newest-az">En Yeniler (A-Z)</option>
+          <option value="newest-za">En Yeniler (Z-A)</option>
+        </select>
+      </div>
+
       <div className="product-grid">
-        {" "}
-        {currentItems?.map((product) => (
+        {currentItems.map((product) => (
           <ProductCard
             key={product.id}
             product={product}
@@ -83,6 +98,7 @@ function ProductList() {
           />
         ))}
       </div>
+
       {totalPages > 1 && (
         <div className="pagination">
           <button
@@ -93,20 +109,15 @@ function ProductList() {
             &lt;
           </button>
 
-          {Array.from({ length: totalPages }, (_, index) => {
-            const pageNumber = index + 1;
-            return (
-              <button
-                key={pageNumber}
-                className={`page-item ${
-                  currentPage === pageNumber ? "active" : ""
-                }`}
-                onClick={() => dispatch(setCurrentPage(pageNumber))}
-              >
-                {pageNumber}
-              </button>
-            );
-          })}
+          {Array.from({ length: totalPages }, (_, i) => i + 1).map((num) => (
+            <button
+              key={num}
+              className={`page-item ${currentPage === num ? "active" : ""}`}
+              onClick={() => dispatch(setCurrentPage(num))}
+            >
+              {num}
+            </button>
+          ))}
 
           <button
             className="page-nav"

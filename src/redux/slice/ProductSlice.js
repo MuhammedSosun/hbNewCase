@@ -6,8 +6,8 @@ const initialState = {
   selectedProduct: null,
   currentPage: 1,
   sortBy: "",
-  selectedBrand: "",
-  selectedColor: "",
+  selectedBrand: [],
+  selectedColor: [],
   searchTerm: "",
 };
 
@@ -26,14 +26,25 @@ export const productSlice = createSlice({
       state.currentPage = 1;
     },
     setSelectedBrand: (state, action) => {
-      state.selectedBrand =
-        state.selectedBrand === action.payload ? "" : action.payload;
+      const brand = action.payload;
+      if(state.selectedBrand.includes(brand)){
+        state.selectedBrand = state.selectedBrand.filter(
+        (item) => item !== brand) 
+      } else{
+        state.selectedBrand.push(brand);
+      }
       state.currentPage = 1;
     },
     setSelectedColor: (state, action) => {
-      state.selectedColor =
-        state.selectedColor === action.payload ? "" : action.payload;
-      state.currentPage = 1;
+      const color = action.payload;
+      if(state.selectedColor.includes(color)){
+        state.selectedColor = state.selectedColor.filter(
+          (item) => item !== color
+        );
+      }else{
+        state.selectedColor.push(color);
+      }
+      state.currentPage =1;
     },
     setSearchTerm: (state, action) => {
       state.searchTerm = action.payload;

@@ -1,6 +1,7 @@
 import React from "react";
 import "../css/productCard.css";
 import { useNavigate } from "react-router-dom";
+
 function ProductCard({ product, onAddToCart, isInCart }) {
   const navigate = useNavigate();
   return (
@@ -31,17 +32,18 @@ function ProductCard({ product, onAddToCart, isInCart }) {
               <span className="discount-badge">%{product.discount}</span>
             </div>
           )}
-
           <span className="current-price">{product.price} TL</span>
         </div>
+        {/* Sınıf ismini card-specific-btn yaptım */}
         <button
-          className={`add-to-cart-btn ${isInCart ? "disabled" : ""}`}
+          className={`card-specific-btn ${isInCart ? "is-in-cart" : ""}`}
           disabled={isInCart}
-          onClick={() => {
+          onClick={(e) => {
+            e.stopPropagation();
             onAddToCart();
           }}
         >
-          {isInCart ? "Bu Ürün Sepete Eklendi" : "Sepete Ekle"}
+          {isInCart ? "Ürün Sepette" : "Sepete Ekle"}
         </button>
       </div>
     </div>

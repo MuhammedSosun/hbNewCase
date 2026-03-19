@@ -6,24 +6,37 @@ import {
   setSelectedColor,
   setSortOrder,
 } from "../redux/slice/ProductSlice";
+import FilterGroup from "../components/FilterGroup";
 
 function SideBar() {
   const dispatch = useDispatch();
+
   const { products, selectedBrand, selectedColor, sortBy, searchTerm } =
     useSelector((store) => store.products);
 
-  const colorCounts = products.reduce((acc, product) => {
-    acc[product.color] = (acc[product.color] || 0) + 1;
+  const colorCounts = (products || []).reduce((acc, product) => {
+    if (product.color) {
+      acc[product.color] = (acc[product.color] || 0) + 1;
+    }
     return acc;
   }, {});
 
-  const brandCounts = products.reduce((acc, product) => {
-    acc[product.brand] = (acc[product.brand] || 0) + 1;
+  const brandCounts = (products || []).reduce((acc, product) => {
+    if (product.brand) {
+      acc[product.brand] = (acc[product.brand] || 0) + 1;
+    }
     return acc;
   }, {});
-  //buranın amacı normalde biz arrayle sadece map dönebiliri ve bu yüzden burası objeyi arraye dönüştürüyor
-  const colorOptions = Object.entries(colorCounts);
-  const brandOptions = Object.entries(brandCounts);
+
+  const colorOptions = Object.entries(colorCounts).map(([name, count]) => ({
+    name,
+    count,
+  }));
+
+  const brandOptions = Object.entries(brandCounts).map(([name, count]) => ({
+    name,
+    count,
+  }));
 
   return (
     <aside className="sidebar">
@@ -33,22 +46,13 @@ function SideBar() {
         </p>
       </div>
 
-      <div className="filter-section">
-        <h3 className="filter-title">Renk</h3>
-        <ul className="filter-list">
-          {colorOptions.map(([color, count]) => (
-            <li
-              key={color}
-              className={`filter-item ${
-                selectedColor === color ? "active" : ""
-              }`}
-              onClick={() => dispatch(setSelectedColor(color))}
-            >
-              {color} ({count})
-            </li>
-          ))}
-        </ul>
-      </div>
+      <FilterGroup
+        title="Renk"
+        items={colorOptions}
+        limit={5}
+        selectedValue={selectedColor}
+        onSelect={(color) => dispatch(setSelectedColor(color))}
+      />
 
       <div className="filter-section">
         <h3 className="filter-title">Sıralama</h3>
@@ -69,31 +73,24 @@ function SideBar() {
             className={`filter-item ${sortBy === "newest-az" ? "active" : ""}`}
             onClick={() => dispatch(setSortOrder("newest-az"))}
           >
-            En Yeniler (A-Z)
+            En Yeniye Göre
           </li>
           <li
             className={`filter-item ${sortBy === "newest-za" ? "active" : ""}`}
             onClick={() => dispatch(setSortOrder("newest-za"))}
           >
-            En Yeniler (Z-A)
+            En Eskiye Göre
           </li>
         </ul>
       </div>
 
-      <div className="filter-section">
-        <h3 className="filter-title">Marka</h3>
-        <ul className="filter-list">
-          {brandOptions.map(([brand, count]) => (
-            <li
-              key={brand}
-              className={`filter-item ${selectedBrand === brand ? "active" : ""}`}
-              onClick={() => dispatch(setSelectedBrand(brand))}
-            >
-              {brand} ({count})
-            </li>
-          ))}
-        </ul>
-      </div>
+      <FilterGroup
+        title="Marka"
+        items={brandOptions}
+        limit={5}
+        selectedValue={selectedBrand}
+        onSelect={(brand) => dispatch(setSelectedBrand(brand))}
+      />
     </aside>
   );
 }

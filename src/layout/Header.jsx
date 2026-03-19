@@ -59,7 +59,11 @@ function Header() {
         </div>
 
         <div className="header-right">
-          <div className="cart-wrapper">
+          <div
+            className="cart-wrapper"
+            onMouseEnter={() => setIsCartOpen(true)}
+            onMouseLeave={() => setIsCartOpen(false)}
+          >
             <button
               className="cart-button"
               onClick={() => setIsCartOpen(!isCartOpen)}
@@ -72,24 +76,39 @@ function Header() {
             </button>
 
             <div className={`cart-dropdown ${isCartOpen ? "active" : ""}`}>
-              {cartItems.map((item) => (
-                <div className="cart-item" key={item.id}>
-                  <img src={item.imageUrl} alt={item.name} width="40" />
-                  <div className="cart-item-info">
-                    <p className="cart-item-name">{item.name}</p>
-                    <button
-                      className="remove-btn"
-                      onClick={() => openDeleteModal(item.id)}
-                    >
-                      Kaldır
-                    </button>
+              <div className="cart-items-list">
+                {cartItems.map((item) => (
+                  <div className="cart-item" key={item.id}>
+                    <img
+                      src={item.imageUrl}
+                      alt={item.name}
+                      style={{
+                        cursor: "pointer",
+                        position: "relative",
+                        zIndex: 10,
+                      }}
+                      width="40"
+                      onClick={() => navigate(`/product/${item.id}`)}
+                    />
+                    <div className="cart-item-info">
+                      <p className="cart-item-name">{item.name}</p>
+                      <button
+                        className="remove-btn"
+                        onClick={() => openDeleteModal(item.id)}
+                      >
+                        Kaldır
+                      </button>
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
               <div className="cart-footer">
                 <button
                   className="go-to-cart-btn"
-                  onClick={() => navigate("/checkout")}
+                  onClick={() => {
+                    navigate("/checkout");
+                    setIsCartOpen(false);
+                  }}
                 >
                   Sepete Git
                 </button>
@@ -101,7 +120,10 @@ function Header() {
       <Modal
         isOpen={showModal}
         title="Ürünü silmek istediğinize emin misiniz?"
-        description="Bu işlem geri alınamaz ve ürün sepetinizden kaldırılacaktır."
+        description="Lorem, ipsum dolor sit amet consectetur adipisicing elit. Facere,
+            distinctio qui! Velit sunt ratione iure possimus facere maxime.
+            Fugiat neque consequatur aperiam quibusdam perferendis tenetur? Vel
+            aspernatur itaque blanditiis totam."
         onCancel={() => setShowModal(false)}
         onConfirm={confirmDelete}
       />

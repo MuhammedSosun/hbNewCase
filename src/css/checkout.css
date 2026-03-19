@@ -1,7 +1,8 @@
 .checkout-container {
   display: flex;
   gap: 30px;
-  margin-top: 30px;
+  margin: 30px auto;
+  max-width: 1200px;
   align-items: flex-start;
 }
 
@@ -10,9 +11,16 @@
 }
 
 .checkout-left h2 {
-  font-size: 22px;
+  font-size: 20px;
   margin-bottom: 20px;
-  color: #333;
+  color: #484848;
+  font-weight: 700;
+}
+
+.checkout-items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
 
 .checkout-item {
@@ -20,8 +28,7 @@
   background: #fff;
   border: 1px solid #e5e5e5;
   border-radius: 8px;
-  padding: 20px;
-  margin-bottom: 15px;
+  padding: 16px;
   align-items: center;
 }
 
@@ -30,32 +37,36 @@
   height: 100px;
   object-fit: contain;
   margin-right: 20px;
+  border: 1px solid #f0f0f0;
+  border-radius: 4px;
 }
 
 .item-details {
   display: flex;
   justify-content: space-between;
   width: 100%;
-  align-items: center;
 }
 
 .item-name {
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 600;
+  color: #484848;
   margin-bottom: 5px;
 }
 
 .item-sub {
-  font-size: 13px;
-  color: #777;
+  font-size: 12px;
+  color: #919191;
 }
 
 .item-price-section {
-  text-align: right;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: space-between;
 }
 
 .item-price {
-  display: block;
   font-size: 18px;
   font-weight: 700;
   color: #ff6000;
@@ -65,8 +76,8 @@
 .item-remove-link {
   background: none;
   border: none;
-  color: #999;
-  font-size: 13px;
+  color: #919191;
+  font-size: 12px;
   text-decoration: underline;
   cursor: pointer;
 }
@@ -75,7 +86,6 @@
   color: #f44336;
 }
 
-/* Sağ Taraf - Özet Kutusu */
 .checkout-right {
   flex: 1;
   position: sticky;
@@ -83,33 +93,38 @@
 }
 
 .summary-box {
-  background: #f9f9f9;
+  background: #fff;
   border: 1px solid #e5e5e5;
   border-radius: 8px;
   padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .summary-box h3 {
   font-size: 18px;
   margin-bottom: 20px;
+  color: #484848;
 }
 
 .summary-line {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 15px;
+  margin-bottom: 12px;
   font-size: 14px;
+  color: #666;
 }
 
 .free-shipping {
   color: #2ecc71;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .summary-total {
   display: flex;
   justify-content: space-between;
-  margin: 20px 0;
+  margin: 15px 0;
+  padding-top: 15px;
+  border-top: 1px solid #eee;
   font-weight: 700;
   font-size: 18px;
 }
@@ -123,14 +138,27 @@
   background: #ff6000;
   color: #fff;
   border: none;
-  padding: 15px;
-  border-radius: 6px;
+  padding: 14px;
+  border-radius: 4px;
   font-size: 16px;
   font-weight: 700;
   cursor: pointer;
   transition: background 0.2s;
 }
 
-.complete-order-btn:hover {
+.complete-order-btn:hover:not(:disabled) {
   background: #e65600;
+}
+
+.complete-order-btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.empty-cart {
+  padding: 40px;
+  text-align: center;
+  background: #f9f9f9;
+  border-radius: 8px;
+  color: #666;
 }

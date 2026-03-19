@@ -35,20 +35,14 @@ describe("Modal Bileşeni Testleri", () => {
     render(<Modal isOpen={true} title="Test" onCancel={cancelMock} />);
     const cancelBtn = screen.getByText("HAYIR");
     fireEvent.click(cancelBtn);
-    const overlay = screen.getByTestId("modal-overlay");
-    fireEvent.click(overlay);
-    expect(cancelMock).toHaveBeenCalledTimes(2);
+    expect(cancelMock).toHaveBeenCalledTimes(1);
   });
-});
-/*
-  it("HAYIR butonuna veya dışarıdaki overlaye tıklandığında onCancel çalışmalı", () => {
+  it("Overlay çalışmalı modül dışında bir yere tıklayınca kapanmalı", () => {
     const cancelMock = vi.fn();
-    render(<Modal isOpen={true} title="Test" onCancel={cancelMock} />);
-    const cancelBtn = screen.getByText("HAYIR");
-    fireEvent.click(cancelBtn);
+    render(<Modal isOpen={true} title="Test" onCancel={cancelMock}/>);
     const overlay = screen.getByTestId("modal-overlay");
     fireEvent.click(overlay);
-    expect(cancelMock).toHaveBeenCalledTimes(2);
-  });
+    expect(cancelMock).toHaveBeenCalledTimes(1);
+  })
 });
-*/
+
