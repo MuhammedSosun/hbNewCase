@@ -10,19 +10,15 @@ function App() {
   const API_URL = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
-    console.log("========== APP INIT ==========");
-    console.log("ENV VITE_API_URL:", API_URL);
+    console.log("API_URL:", API_URL);
+    console.log("Request URL:", `${API_URL}/products`);
 
     const localData = localStorage.getItem("products");
-    console.log("localStorage products var mı?:", !!localData);
 
     if (localData) {
       try {
         const parsedLocalData = JSON.parse(localData);
-        console.log(
-          "localStorage parse başarılı, ürün sayısı:",
-          parsedLocalData.length,
-        );
+
         dispatch(setProducts(parsedLocalData));
       } catch (error) {
         console.error("localStorage parse hatası:", error);
@@ -33,20 +29,9 @@ function App() {
       const requestUrl = `${API_URL}/products`;
 
       try {
-        console.log("API isteği atılıyor:", requestUrl);
-
         const response = await fetch(requestUrl);
 
-        console.log("Response status:", response.status);
-        console.log("Response ok:", response.ok);
-        console.log(
-          "Response content-type:",
-          response.headers.get("content-type"),
-        );
-        console.log("Response url:", response.url);
-
         const responseText = await response.text();
-        console.log("Response body preview:", responseText.slice(0, 300));
 
         if (!response.ok) {
           throw new Error(`HTTP hata kodu: ${response.status}`);
@@ -63,13 +48,9 @@ function App() {
           throw new Error("API JSON yerine farklı bir içerik döndü");
         }
 
-        console.log("API ürün sayısı:", apiData.length);
-
         const combinedProducts = [...mockProducts, ...apiData];
-        console.log("Birleşik ürün sayısı:", combinedProducts.length);
 
         if (JSON.stringify(combinedProducts) !== localData) {
-          console.log("Yeni veri localStorage'a yazılıyor");
           dispatch(setProducts(combinedProducts));
           localStorage.setItem("products", JSON.stringify(combinedProducts));
         } else {
@@ -85,8 +66,6 @@ function App() {
         } else {
           console.log("localStorage dolu olduğu için mevcut veriler korunuyor");
         }
-      } finally {
-        console.log("========== FETCH FLOW END ==========");
       }
     };
 

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "../css/reviews.css";
 import { useDispatch, useSelector } from "react-redux";
 import { addReview } from "../redux/slice/ReviewSlice";
+import { useMemo } from "react";
 
 function Reviews({ selectedId }) {
   const dispatch = useDispatch();
