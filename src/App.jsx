@@ -4,10 +4,10 @@ import RouterConfig from "./config/RouterConfig";
 import { useEffect } from "react";
 import { mockProducts } from "./mock/products";
 import { setProducts } from "./redux/slice/ProductSlice";
-import { useState } from "react";
 
 function App() {
   const dispatch = useDispatch();
+  const API_URL = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
     const localData = localStorage.getItem("products");
@@ -17,7 +17,7 @@ function App() {
     }
     const fetchAndMergeProducts = async () => {
       try {
-        const response = await fetch("http://localhost:5000/products");
+        const response = await fetch(`${API_URL}/products`);
         const apiData = await response.json();
 
         const combinedProducts = [...mockProducts, ...apiData];

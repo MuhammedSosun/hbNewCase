@@ -11,13 +11,15 @@ function Reviews({ selectedId }) {
   const { reviewsByProductId } = useSelector((store) => store.reviews);
   const currentProductReviews = reviewsByProductId[selectedId] || [];
   const totalComments = currentProductReviews.length;
-  const averageRating =
-    totalComments > 0
-      ? (
-          currentProductReviews.reduce((acc, curr) => acc + curr.rating, 0) /
-          totalComments
-        ).toFixed(1)
-      : 0;
+
+  const averageRating = useMemo(() => {
+    if (currentProductReviews.length === 0) return 0;
+    const total = currentProductReviews.reduce(
+      (acc, curr) => acc + curr.rating,
+      0,
+    );
+    return (total / currentProductReviews.length).toFixed(1);
+  }, [currentProductReviews]);
 
   const [showComments, setShowComments] = useState(false);
 
@@ -39,8 +41,6 @@ function Reviews({ selectedId }) {
     setComment("");
     setRating(0);
   };
-
-  console.log("ratingler", rating);
 
   return (
     <div className="comment-write-container">
